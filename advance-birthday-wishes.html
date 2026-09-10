@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advance Happy Birthday!</title>
+<!--
+  This file is already personalized for Hasvitha Reddy (teacher) and Mallikarjuna Yadav (student).
+  1. Search for "letter-body" if you want to adjust the wording of the card message.
+  2. Search for "birthdayWishes" in the <script> to edit the 6 pop-balloon wishes.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --violet-deep:   #1B1035;
+    --violet-mid:    #2D1B4E;
+    --pink:          #FF3E8A;
+    --yellow:        #FFD23F;
+    --teal:          #00E5C7;
+    --cream:         #FFF7EE;
+    --pink-soft:     #FF7AB0;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    font-family:'Nunito', sans-serif;
+    background:var(--violet-deep);
+    color:var(--cream);
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+
+  h1, h2{
+    font-family:'Baloo 2', cursive;
+  }
+
+  a:focus-visible, button:focus-visible{
+    outline:3px solid var(--teal);
+    outline-offset:4px;
+  }
+
+  /* ---------- confetti ---------- */
+  .confetti-container{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:1;
+  }
+  .confetti{
+    position:absolute;
+    top:-40px;
+    left:var(--left);
+    width:9px;
+    height:14px;
+    background:var(--color);
+    opacity:.85;
+    animation:fall var(--duration) linear var(--delay) infinite;
+    border-radius:2px;
+  }
+  @keyframes fall{
+    0%{   transform:translateY(-10vh) rotate(0deg); }
+    100%{ transform:translateY(110vh) rotate(540deg); }
+  }
+
+  /* ---------- layout ---------- */
+  main{ position:relative; z-index:2; }
+
+  section{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:5rem 1.5rem;
+    position:relative;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{ overflow:hidden; }
+
+  .balloon-bg{
+    position:absolute;
+    bottom:-20vh;
+    width:60px;
+    height:74px;
+    border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;
+    opacity:.35;
+    animation:drift linear infinite;
+  }
+  .balloon-bg::after{
+    content:"";
+    position:absolute;
+    left:50%; bottom:-40px;
+    width:2px; height:44px;
+    background:rgba(255,247,238,.4);
+    transform:translateX(-50%);
+  }
+  @keyframes drift{
+    0%{   transform:translateY(0) translateX(0); }
+    50%{  transform:translateY(-60vh) translateX(20px); }
+    100%{ transform:translateY(-130vh) translateX(-10px); }
+  }
+
+  .hero h1{
+    font-size:clamp(2.6rem, 7vw, 5rem);
+    font-weight:800;
+    line-height:1.05;
+    max-width:16ch;
+    color:var(--cream);
+  }
+  .hero h1 .swirl{
+    display:block;
+    color:var(--yellow);
+    font-size:0.55em;
+    margin-top:.4em;
+  }
+
+  .hero .sub{
+    margin-top:1.5rem;
+    font-size:clamp(1.05rem, 2.4vw, 1.35rem);
+    max-width:38ch;
+    color:var(--cream);
+    opacity:.85;
+    font-weight:600;
+  }
+
+  .scroll-hint{
+    margin-top:4rem;
+    font-size:.95rem;
+    font-weight:700;
+    color:var(--teal);
+    animation:bob 1.8s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(8px); }
+  }
+
+  /* ---------- balloon pop section ---------- */
+  .balloon-pop-section h2{
+    font-size:clamp(1.6rem, 4vw, 2.2rem);
+    max-width:20ch;
+  }
+  .balloon-pop-section .sub{
+    margin-top:.6rem;
+    opacity:.75;
+    font-weight:600;
+    max-width:34ch;
+  }
+
+  .balloon-field{
+    margin-top:3rem;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+    gap:1.6rem;
+    max-width:760px;
+    width:100%;
+  }
+
+  .balloon{
+    position:relative;
+    background:none;
+    border:none;
+    cursor:pointer;
+    height:190px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    color:inherit;
+    font-family:inherit;
+  }
+
+  .balloon .shape{
+    width:84px;
+    height:100px;
+    border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;
+    background:var(--balloon-color);
+    position:relative;
+    transition:transform .15s ease;
+    box-shadow:inset -10px -12px 20px rgba(0,0,0,.15);
+  }
+  .balloon .shape::after{
+    content:"";
+    position:absolute;
+    left:50%; top:100%;
+    width:2px; height:70px;
+    background:rgba(255,247,238,.45);
+    transform:translateX(-50%);
+  }
+  .balloon:hover .shape{ transform:translateY(-6px); }
+
+  .balloon .monkey{
+    position:absolute;
+    bottom:20px;
+    left:50%;
+    font-size:2.6rem;
+    line-height:1;
+    opacity:0;
+    transform:translateX(-50%) scale(.3) rotate(-15deg);
+    pointer-events:none;
+  }
+  .balloon.popped .monkey{
+    animation:monkeyPeek .9s ease forwards;
+  }
+  @keyframes monkeyPeek{
+    0%{   opacity:0; transform:translateX(-50%) scale(.3) rotate(-15deg); }
+    35%{  opacity:1; transform:translateX(-50%) scale(1.15) rotate(8deg); }
+    55%{  opacity:1; transform:translateX(-50%) scale(1) rotate(-4deg); }
+    100%{ opacity:0; transform:translateX(-50%) scale(.7) translateY(-18px); }
+  }
+
+  .balloon .msg{
+    position:absolute;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%) scale(.85);
+    width:170px;
+    background:var(--cream);
+    color:var(--violet-deep);
+    border-radius:10px;
+    padding:.8rem .9rem;
+    font-size:.85rem;
+    font-weight:700;
+    line-height:1.35;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .3s ease .85s, transform .3s ease .85s;
+  }
+
+  .balloon.popped .shape{ display:none; }
+  .balloon.popped .msg{
+    opacity:1;
+    transform:translateX(-50%) scale(1);
+  }
+
+  .msg-reveal{
+    width:220px;
+    font-family:'Baloo 2', cursive;
+    font-size:1.4rem;
+    font-weight:800;
+    color:var(--pink);
+    padding:1.2rem 1rem;
+    text-align:center;
+  }
+
+  .particle{
+    position:absolute;
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--balloon-color);
+    top:50%; left:50%;
+    pointer-events:none;
+    animation:burst .5s ease-out forwards;
+  }
+  @keyframes burst{
+    to{
+      transform:translate(var(--dx), var(--dy)) scale(0);
+      opacity:0;
+    }
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    min-height:60vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:4rem 1.5rem;
+  }
+  footer p{
+    font-size:clamp(1.2rem, 3vw, 1.6rem);
+    font-weight:700;
+    max-width:26ch;
+  }
+  .footer-wish{
+    opacity:.55;
+    transition:opacity .5s ease;
+  }
+  .footer-wish.revealed{
+    opacity:1;
+    color:var(--yellow);
+  }
+  footer .signature{
+    margin-top:1.2rem;
+    font-family:'Baloo 2', cursive;
+    font-size:1.5rem;
+    color:var(--yellow);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="confetti-container" id="confetti" aria-hidden="true"></div>
+
+<main>
+
+  <section class="hero">
+    <div class="balloon-bg" style="left:8%;  background:var(--pink);   animation-duration:14s; animation-delay:0s;"></div>
+    <div class="balloon-bg" style="left:20%; background:var(--yellow); animation-duration:18s; animation-delay:3s;"></div>
+    <div class="balloon-bg" style="left:78%; background:var(--teal);   animation-duration:16s; animation-delay:1.5s;"></div>
+    <div class="balloon-bg" style="left:88%; background:var(--pink-soft); animation-duration:20s; animation-delay:5s;"></div>
+
+    <h1>Hey Ma'am!<span class="swirl">I made something for you</span></h1>
+    <p class="sub">Pop the balloons below, one at a time — go on, see what happens.</p>
+    <div class="scroll-hint">keep scrolling ↓</div>
+  </section>
+
+  <section class="balloon-pop-section">
+    <h2>Pop them one by one</h2>
+    <p class="sub">Don't skip ahead — just pop, in order.</p>
+    <div class="balloon-field" id="balloonField"></div>
+  </section>
+
+  <footer>
+    <p id="footerWish" class="footer-wish">Pop all the balloons above to find out 👀</p>
+    <p class="signature">Your student</p>
+  </footer>
+
+</main>
+
+<script>
+  // ---------- confetti ----------
+  const confettiContainer = document.getElementById('confetti');
+  const confettiColors = ['#FF3E8A', '#FFD23F', '#00E5C7', '#FF7AB0'];
+  const CONFETTI_COUNT = 40;
+
+  for (let i = 0; i < CONFETTI_COUNT; i++) {
+    const piece = document.createElement('span');
+    piece.className = 'confetti';
+    piece.style.setProperty('--left', Math.random() * 100 + 'vw');
+    piece.style.setProperty('--color', confettiColors[i % confettiColors.length]);
+    piece.style.setProperty('--duration', (6 + Math.random() * 6) + 's');
+    piece.style.setProperty('--delay', (Math.random() * 8) + 's');
+    confettiContainer.appendChild(piece);
+  }
+
+  // ---------- balloon field ----------
+  const animalEmojis = ['🐄', '🐮', '🐑', '🎉'];
+
+  const birthdayWishes = [
+    { text: "Don't waste time — go do some work! 😄", color: '#FF3E8A' },
+    { text: "I know you're going to pop the next one too.", color: '#FFD23F' },
+    { text: "See? Wasting time again 😄", color: '#00E5C7' },
+    { text: "Advance Happy Birthday!", color: '#7A6CFF', reveal: true }
+  ];
+
+  const field = document.getElementById('balloonField');
+
+  birthdayWishes.forEach((wish, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'balloon';
+    btn.style.setProperty('--balloon-color', wish.color);
+    btn.setAttribute('aria-label', 'Pop balloon ' + (i + 1) + ' for a surprise and a wish');
+
+    const shape = document.createElement('div');
+    shape.className = 'shape';
+
+    const monkey = document.createElement('div');
+    monkey.className = 'monkey';
+    monkey.textContent = animalEmojis[i % animalEmojis.length];
+    monkey.setAttribute('aria-hidden', 'true');
+
+    const msg = document.createElement('div');
+    msg.className = wish.reveal ? 'msg msg-reveal' : 'msg';
+    msg.textContent = wish.text;
+
+    btn.appendChild(shape);
+    btn.appendChild(monkey);
+    btn.appendChild(msg);
+    field.appendChild(btn);
+
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('popped')) return;
+      btn.classList.add('popped');
+
+      if (wish.reveal) {
+        const footerWish = document.getElementById('footerWish');
+        footerWish.textContent = 'Advance Happy Birthday, Teacher! 🎉';
+        footerWish.classList.add('revealed');
+      }
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduceMotion) {
+        for (let p = 0; p < 10; p++) {
+          const particle = document.createElement('span');
+          particle.className = 'particle';
+          const angle = (Math.PI * 2 * p) / 10;
+          const distance = 40 + Math.random() * 20;
+          particle.style.setProperty('--dx', Math.cos(angle) * distance + 'px');
+          particle.style.setProperty('--dy', Math.sin(angle) * distance + 'px');
+          btn.appendChild(particle);
+          setTimeout(() => particle.remove(), 550);
+        }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
